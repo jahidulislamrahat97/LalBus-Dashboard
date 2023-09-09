@@ -1,12 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>More Fish Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/style.css">
+  <title>Data Tracker</title>
 </head>
+
 <body>
-    <h1>Hello</h1>
-    <h2> Currentf time is {{now}}</h2>
+
+  <h1 style="text-align:center">LalBus Data Tracker</h1>
+  <div class="center-container">
+    <div class="tracker-container">
+      <div class="tracker-title">Tracker Information</div>
+      <div class="tracker-data">Tracker ID: 1043002210110001</div>
+      <div class="tracker-data">Total Data: <span id="tracker_total_data_1"></span></div>
+      <div class="tracker-data">Total Started: <span id="tracker_total_started_1"></span></div>
+      <div class="tracker-data">Total MQTT Disconnected: <span id="tracker_total_mqtt_disconnected_1"></span></div>
+      <div class="tracker-data">Last Online: <span id="tracker_last_online_1"></span></div>
+    </div>
+
+    <div class="tracker-container">
+      <div class="tracker-title">Tracker Information</div>
+      <div class="tracker-data">Tracker ID: 1043002210110002</div>
+      <div class="tracker-data">Total Data: <span id="tracker_total_data_2"></span></div>
+      <div class="tracker-data">Total Started: <span id="tracker_total_started_2"></span></div>
+      <div class="tracker-data">Total MQTT Disconnected: <span id="tracker_total_mqtt_disconnected_2"></span></div>
+      <div class="tracker-data">Last Online: <span id="tracker_last_online_2"></span></div>
+    </div>
+  </div>
+
+  <script>
+    function updateData() {
+      fetch('/get_tracker_data_1')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('tracker_total_data_1').textContent = data.tracker_data_1[0];
+          document.getElementById('tracker_total_started_1').textContent = data.tracker_data_1[1];
+          document.getElementById('tracker_total_mqtt_disconnected_1').textContent = data.tracker_data_1[2];
+          document.getElementById('tracker_last_online_1').textContent = data.tracker_data_1[3];
+        });
+
+        fetch('/get_tracker_data_2')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('tracker_total_data_2').textContent = data.tracker_data_2[0];
+          document.getElementById('tracker_total_started_2').textContent = data.tracker_data_2[1];
+          document.getElementById('tracker_total_mqtt_disconnected_2').textContent = data.tracker_data_2[2];
+          document.getElementById('tracker_last_online_2').textContent = data.tracker_data_2[3];
+        });
+    }
+
+    setInterval(updateData, 1000);
+  </script>
 </body>
 
 </html>

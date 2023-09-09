@@ -1,0 +1,36 @@
+.center-container {
+    display: grid;
+    /* Use a grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 5px;
+    /* Spacing between containers */
+    justify-items: center;
+    /* Center the items horizontally within the columns */
+}
+
+.tracker-container {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    width: auto;
+    margin: 0 10px 20px 0;
+    /* Margin between containers */
+    display: inline-block;
+    /* Display containers side by side */
+    box-sizing: border-box;
+    /* Include padding in the width calculation */
+}
+
+/* Styling for the title */
+.tracker-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Styling for the tracker data */
+.tracker-data {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
