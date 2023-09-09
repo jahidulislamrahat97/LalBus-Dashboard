@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_mqtt import Mqtt
 import random
 import time
-import datetime
+from datetime import datetime
 import pytz
 
 app = Flask(__name__)
@@ -16,8 +16,8 @@ topic = 'RedPanda/LalBus'
 
 mqtt_client = Mqtt(app)
 
-TRACKER_1_DID = "1043002210110001"
-TRACKER_2_DID = "1043002210110002"
+TRACKER_1_DID = "101112309090001"
+TRACKER_2_DID = "101112309090002"
 #total_data,valid_data,started,disconnected,date
 tracker_data_1 = [0,0,0,"0"]
 tracker_data_2 = [0,0,0,"0"]
@@ -52,6 +52,9 @@ def handle_mqtt_message(client, userdata, message):
                     tracker_data_1[2] = tracker_data_1[2]+1
                 else:
                     tracker_data_1[0] = tracker_data_1[0]+1
+                
+                current_time_dhaka = datetime.now(dhaka_timezone)
+                tracker_data_1[3] = current_time_dhaka.strftime("%Y-%m-%d %H:%M:%S")
             elif (data[0] == TRACKER_2_DID):
                 if (data[1] == "started"):
                     tracker_data_2[1] = tracker_data_2[1]+1
@@ -59,6 +62,9 @@ def handle_mqtt_message(client, userdata, message):
                     tracker_data_2[2] = tracker_data_2[2]+1
                 else:
                     tracker_data_2[0] = tracker_data_2[0]+1
+                current_time_dhaka = datetime.now(dhaka_timezone)
+                tracker_data_2[3] = current_time_dhaka.strftime("%Y-%m-%d %H:%M:%S")
+            
 
     except Exception as e:
         # Handle other exceptions
@@ -80,7 +86,7 @@ def get_tracker_1():
     tracker_total_data = tracker_data_1[0]
     tracker_total_started = tracker_data_1[1]
     tracker_total_mqtt_disconnected = tracker_data_1[2]
-    tracker_last_online = datetime.datetime.now(dhaka_timezone)
+    tracker_last_online = tracker_data_1[3]
 
     tracker_data_1 = [tracker_total_data, tracker_total_started, tracker_total_mqtt_disconnected,tracker_last_online]
     return {'tracker_data_1': tracker_data_1}
@@ -91,7 +97,7 @@ def get_tracker_2():
     tracker_total_data = tracker_data_2[0]
     tracker_total_started = tracker_data_2[1]
     tracker_total_mqtt_disconnected = tracker_data_2[2]
-    tracker_last_online = datetime.datetime.now(dhaka_timezone)
+    tracker_last_online = tracker_data_2[3]
 
     tracker_data_2 = [tracker_total_data, tracker_total_started, tracker_total_mqtt_disconnected,tracker_last_online]
     return {'tracker_data_2': tracker_data_2}
